@@ -6,27 +6,28 @@ namespace FiveInTheRow
 {
     class Game
     {
-        private int height;
-        private int width;
+        private int cols;
+        private int rows;
         private int[,] board;
 
-        public Game(int height, int width)
+        public Game(int rows, int cols)
         {
-            //this.height = height;
-            //this.width = width;
-            this.board = CreateBoard(height, width);
+            this.cols = cols;
+            this.rows = rows;
+            this.board = CreateBoard(rows , cols);
         }
 
-        private int[,] CreateBoard(int height, int width)
+        private int[,] CreateBoard(int rows, int  cols)
         {
-            int[,] board = new int[height, width];
-            for (int x = 0; x < height; x++)
+            int[,] board = new int[rows , cols];
+            for (int x = 0; x < rows; x++)
             {
-                for (int y = 0; y < width; y++)
+                for (int y = 0; y < cols; y++)
                 {
                     board[x, y] = 0;
                 }
             }
+            this.DrawBoard(board);
             return board;
         }
 
@@ -34,29 +35,22 @@ namespace FiveInTheRow
         {
             bool isCorrect = false;
             string input;
+            int coordY;
+            int coordX;
             do
             {
+                Console.WriteLine("please provide coordinates for your move?");
                 input = Console.ReadLine();
-                Console.WriteLine("please provide field");
-
-
-
-                Console.WriteLine("input len" + input.Length);
-
-
-
-
+                
                 if (input.Length != 2 && input.Length != 3)
                 {
                     Console.WriteLine("only 2 or 3 signs allowed");
                     continue;
                 }
 
-                int firstSign = input[0];
+                int firstSign = char.ToUpper(input[0]);
                 int secondSign = input[1];
-                Console.WriteLine(firstSign) ;
-                Console.WriteLine(this.board.Length) ;
-                if (!(firstSign < 65 || firstSign > this.board.Length))
+                if (!(firstSign < 65 || firstSign > this.board.Length/rows))
                 {
                     Console.WriteLine("use letters which corresponds with board rows");
                     continue;
@@ -79,18 +73,43 @@ namespace FiveInTheRow
                         continue;
                     }
                 }
+                coordY = char.ToUpper(input[0]) - 65;
+                coordX = int.Parse(input.Substring(1));
+                if (this.board[coordY, coordX] != 0)
+                {
+                    Console.WriteLine("this field was already taken");
+                    continue;
+                }
                 isCorrect = true;
             }
             while (!isCorrect);
-           
-            Console.WriteLine("our input "+ input);
-            int coordX = input[0] - 65;
-            int coordY = int.Parse(input.Substring(1));
-            return (coordX, coordY) ; 
-           
-            
+            coordY = char.ToUpper(input[0]) - 65;
+            coordX = int.Parse(input.Substring(1));
+
+            return (coordY, coordX) ; 
         }
 
+        public void Mark((int,int)Coords, int player)
+        {
+            int rowCoord = Coords.Item1;
+            int columnCoord = Coords.Item2;
+            
+            this.board[rowCoord, columnCoord] = player;
+            DrawBoard(this.board);
 
+        }
+
+        public void DrawBoard(int[,] board)
+        {
+            for (int x = 0; x < board.GetLength(0); x++)
+            {
+                for (int y = 0; y < board.GetLength(1); y++)
+                {
+                    //Console.WriteLine(initBoard[x,y]);
+                    Console.Write("{0}", board[x, y]);
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
