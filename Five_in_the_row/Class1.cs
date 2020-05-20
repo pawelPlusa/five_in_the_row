@@ -111,5 +111,39 @@ namespace FiveInTheRow
                 Console.WriteLine();
             }
         }
+
+        public bool IsWin(int player, int howMany)
+        {
+            bool hasWon = false;
+            hasWon = horizontalCheck(player, howMany, 0, 0, 0);
+            //We stopped here
+            return hasWon;
+        }
+
+        public bool horizontalCheck(int player, int howMany, int row, int col, int counter)
+        {   
+            for(int x = row; x <= this.rows; x++)
+            {
+                for(int y = col; y <= this.cols; y++)
+                {
+                    if(this.board[x, y] == player)
+                    {
+                        counter++;
+                        if( counter == howMany)
+                        {
+                            return true;
+                        }
+                        if(y == this.cols)
+                        {
+                            break;
+                        }
+                        y++;
+                        return horizontalCheck(player, howMany, x, y, counter);
+                    }
+                }
+            }
+            return false;
+            
+        }
     }
 }

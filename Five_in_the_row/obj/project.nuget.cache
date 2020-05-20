@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "6cbpYK8FkOS6j8rpPjRSy7WTRIlGioxyseCMZQH2jtJIHQfPsugK9Hs5oP1dMCWU/ZX6NPX5NA4zAsa24vnIWQ==",
+  "dgSpecHash": "DzPD8gxEwkpfZCRE4ORrXxZiTu4w2q03xe1U7UE1kIDX5oAIGMyy2hffeNWUxqYthZ/dFKZn5IK0NBvEyArhrw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\crm\\source\\repos\\Five_in_the_row\\Five_in_the_row\\Five_in_the_row.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\user\\Desktop\\OOP module\\five_in_the_row\\Five_in_the_row\\Five_in_the_row.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
   "logs": []
 }
