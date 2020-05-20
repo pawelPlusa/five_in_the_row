@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\crm\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\crm\\.nuget\\packages"
-    ]
-  }
-}
