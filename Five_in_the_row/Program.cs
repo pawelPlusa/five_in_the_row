@@ -9,10 +9,14 @@ namespace FiveInTheRow
         static void Main(string[] args)
         {
             
-            Game ourGame = new Game(5, 7);
+            Game ourGame = new Game(10, 10);
+            ourGame.board[0, 0] = 1;
+            ourGame.board[0, 1] = 1;
+            ourGame.board[3, 0] = 1;
+            ourGame.board[3, 1] = 1;
+            ourGame.board[3, 2] = 1;
+            Console.WriteLine(ourGame.IsWin(1, 5));
 
-
-            ourGame.Mark(ourGame.GetMove(), 1);
            
 
         }

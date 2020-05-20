@@ -8,7 +8,7 @@ namespace FiveInTheRow
     {
         private int cols;
         private int rows;
-        private int[,] board;
+        public int[,] board;
 
         public Game(int rows, int cols)
         {
@@ -114,21 +114,30 @@ namespace FiveInTheRow
 
         public bool IsWin(int player, int howMany)
         {
-            bool hasWon = false;
-            hasWon = horizontalCheck(player, howMany, 0, 0, 0);
-            //We stopped here
-            return hasWon;
+            if(HorizontalCheck(player, howMany, 0, 0, 0) || 
+                VerticalCheck(player, howMany, 0, 0, 0)) 
+                //DiagonalRightCheck(player, howMany, 0, 0, 0) || 
+                //DiagonalLeftCheck(player, howMany, 0, this.cols, 0))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+             
         }
 
-        public bool horizontalCheck(int player, int howMany, int row, int col, int counter)
+        public bool HorizontalCheck(int player, int howMany, int row, int col, int counter)
         {   
-            for(int x = row; x <= this.rows; x++)
+            for(int x = row; x <= this.rows - 1; x++)
             {
-                for(int y = col; y <= this.cols; y++)
+                for(int y = col; y <= this.cols - 1; y++)
                 {
                     if(this.board[x, y] == player)
                     {
                         counter++;
+                        Console.WriteLine(counter);
                         if( counter == howMany)
                         {
                             return true;
@@ -137,13 +146,99 @@ namespace FiveInTheRow
                         {
                             break;
                         }
+                        
                         y++;
-                        return horizontalCheck(player, howMany, x, y, counter);
+                        return HorizontalCheck(player, howMany, x, y, counter);
+                    }
+                    else
+                    {
+                        counter = 0;
                     }
                 }
             }
             return false;
             
         }
+        public bool VerticalCheck(int player, int howMany, int row, int col, int counter)
+        {
+            for (int y = col; y <= this.cols - 1; y++)
+            {
+                for (int x = row; x <= this.rows - 1; x++)
+                {
+                    if (this.board[x, y] == player)
+                    {
+                        counter++;
+                        if (counter == howMany)
+                        {
+                            return true;
+                        }
+                        if (x == this.rows)
+                        {
+                            break;
+                        }
+                        x++;
+                        return VerticalCheck(player, howMany, x, y, counter);
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool DiagonalRightCheck(int player, int howMany, int row, int col, int counter)
+        {
+            for (int x = row; x <= this.rows - 1; x++)
+            {
+                for (int y = col; y <= this.cols - 1; y++)
+                {
+                    if (this.board[x, y] == player)
+                    {
+                        counter++;
+                        if (counter == howMany)
+                        {
+                            return true;
+                        }
+                        if (y == this.cols || x == this.rows)
+                        {
+                            break;
+                        }
+                        y++;
+                        x++;
+                        return DiagonalRightCheck(player, howMany, x, y, counter);
+                    }
+                }
+            }
+            return false;
+
+        }
+        public bool DiagonalLeftCheck(int player, int howMany, int row, int col, int counter)
+        {
+            for (int x = row; x <= this.rows - 1; x++)
+            {
+                for (int y = cols - 1; y >= 0; y--)
+                {
+                    if (this.board[x, y] == player)
+                    {
+                        counter++;
+                        if (counter == howMany)
+                        {
+                            return true;
+                        }
+                        if (y == 0 || x == this.rows)
+                        {
+                            break;
+                        }
+                        y--;
+                        x++;
+                        return DiagonalLeftCheck(player, howMany, x, y, counter);
+                    }
+                }
+            }
+            return false;
+
+        }
+
     }
 }
