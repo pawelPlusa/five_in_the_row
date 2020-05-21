@@ -104,6 +104,7 @@ namespace FiveInTheRow
 
         public void DrawBoard(int[,] board)
         {
+            Console.Clear();
             Console.Write("  ");
             for (int colNum = 0; colNum < this.cols; colNum++)
             {
@@ -169,11 +170,6 @@ namespace FiveInTheRow
                         {
                             return true;
                         }
-                        if (y == this.cols)
-                        {
-                            Console.WriteLine("po co to? :)");
-                            break;
-                        }
                         //zabezpiecza przed wysypaniem gdy testowalismy dla y przy scianie
                         if (y < cols - 1)
                         {
@@ -181,7 +177,6 @@ namespace FiveInTheRow
                         }
                         else
                         {
-                            Console.WriteLine("doszlo do sciany");
                             lastMatched = false;
                             x = 0;
                             counter = 0;
@@ -219,11 +214,7 @@ namespace FiveInTheRow
                         {
                             return true;
                         }
-                        if (x == this.rows)
-                        {
-                            Console.WriteLine("czy to sie wyk i po co to?");
-                            break;
-                        }
+
                         x++;
                         return VerticalCheck(player, howMany, x, y, counter);
                     }
