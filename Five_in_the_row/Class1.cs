@@ -322,6 +322,33 @@ namespace FiveInTheRow
             }
             return false;
         }
+        public bool IsFull(int[,] board)
+        {
+            foreach(int field in board)
+            {
+                if(field == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public void PrintResult(int player)
+        {
+            if(player == 1)
+            {
+                Console.WriteLine("X won!");
+            }
+            else if (player == 2)
+            {
+                Console.WriteLine("O won!");
+            }
+            else
+            {
+                Console.WriteLine("It's a tie!");
+            }
+
+        }
 
     }
 }

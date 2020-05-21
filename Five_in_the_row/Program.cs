@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Unicode;
 
@@ -8,29 +9,50 @@ namespace FiveInTheRow
     {
         static void Main(string[] args)
         {
-           
+            Program.GameLogic();
+        }
+        public static void GameLogic()
+        {
+            Console.WriteLine("Give number of board rows: ");
+            int rows = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Give number of board cols: ");
+            int cols = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Give number of fields to get WIN: ");
+            int howMany = Int32.Parse(Console.ReadLine());
+
+            var OurGame = new Game(rows, cols);
+            OurGame.DrawBoard(OurGame.board);
+            int player = 1;
+            bool isOver = true;
+            while (isOver)
+            {
+                OurGame.Mark(OurGame.GetMove(), player);
+                if(OurGame.IsWin(player, howMany))
+                {
+                    OurGame.PrintResult(player);
+                    isOver = false;
+                }
+                else if (OurGame.IsFull(OurGame.board))
+                {
+                    OurGame.PrintResult(0);
+                    isOver = false;
+                }
+                else
+                {
+                    if (player == 1)
+                    {
+                        player = 2;
+                    }
+                    else
+                    {
+                        player = 1;
+                    }
+                }
 
 
-            Game ourGame = new Game(7, 7);
-            ourGame.board[0, 0] = 1;
-            ourGame.board[1, 0] = 1;
-            ourGame.board[1, 1] = 1;
-            ourGame.board[1, 2] = 1;
-            ourGame.board[1, 3] = 1;
-            ourGame.board[1, 1] = 1;
-            ourGame.board[3, 0] = 1;
-            ourGame.board[3, 2] = 1;
-            ourGame.board[3, 6] = 1;
-            ourGame.board[4, 5] = 1;
-            ourGame.board[5, 4] = 1;
-            ourGame.board[6, 3] = 1;
-            ourGame.DrawBoard(ourGame.board);
-            Console.WriteLine(ourGame.IsWin(1, 4));
+            }
 
-           
 
         }
-
-
     }
 }
