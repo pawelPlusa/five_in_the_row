@@ -143,8 +143,6 @@ namespace FiveInTheRow
                         counter++;
                         boardTemp[x, y] = 0;
                         lastMatched = true;
-                        //Console.WriteLine(x + "," + y);
-                        Console.WriteLine("counter horizontal check" + counter);
                         if (counter == howMany)
                         {
                             return true;
@@ -158,7 +156,8 @@ namespace FiveInTheRow
                         if (y < cols - 1)
                         {
                             y++;
-                        }else
+                        }
+                        else
                         {
                             Console.WriteLine("doszlo do sciany");
                             lastMatched = false;
@@ -174,9 +173,7 @@ namespace FiveInTheRow
                     }
                     else if (y > 0 && boardTemp[x, y] == 0 && this.board[x, y - 1] == 1 && lastMatched)
                     {
-                        Console.WriteLine("else if");
                         x = 0;
-                        //y = 0;
                         counter = 0;
                         lastMatched = false;
                         break;
@@ -185,7 +182,6 @@ namespace FiveInTheRow
 
                 }
             }
-            Console.WriteLine("koniec");
             return false;
 
         }
@@ -248,7 +244,6 @@ namespace FiveInTheRow
         }
         public bool DiagonalLeftCheck(int player, int howMany, int row, int col, int counter, int[,] board, bool lastMatched = false)
         {
-            Console.WriteLine("Diag left check start");
             int[,] boardTemp = board.Clone() as int[,];
             for (int x = row; x <= this.rows - 1; x++)
             {
@@ -258,7 +253,6 @@ namespace FiveInTheRow
                     if (boardTemp[x, y] == player)
                     {
                         counter++;
-                        Console.WriteLine("DiagonalLeftCheck counter" + counter);
                         boardTemp[x, y] = 0;
                         lastMatched = true;
                         if (counter == howMany)
@@ -273,7 +267,6 @@ namespace FiveInTheRow
                             x++;
                         } else
                         {
-                            Console.WriteLine("doszlo do sciany");
                             lastMatched = false;
                             x = 0;
                             counter = 0;
@@ -285,7 +278,6 @@ namespace FiveInTheRow
                     }
                     else if (y < (cols-1) && x > 0 && boardTemp[x, y] == 0 && this.board[x - 1, y + 1] == 1 && lastMatched)
                     {
-                        //Console.WriteLine("else if");
                         x = 0;
                         counter = 0;
                         lastMatched = false;
