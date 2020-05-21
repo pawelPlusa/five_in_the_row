@@ -13,6 +13,7 @@ namespace FiveInTheRow
         }
         public static void GameLogic()
         {
+            //Dodać wyłącznosć wprowadzania liczb całkowitych
             Console.WriteLine("Give number of board rows: ");
             int rows = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Give number of board cols: ");
@@ -21,9 +22,10 @@ namespace FiveInTheRow
             int howMany = Int32.Parse(Console.ReadLine());
 
             var OurGame = new Game(rows, cols);
-            OurGame.DrawBoard(OurGame.board);
+
             int player = 1;
             bool isOver = true;
+
             while (isOver)
             {
                 OurGame.Mark(OurGame.GetMove(), player);
@@ -48,8 +50,6 @@ namespace FiveInTheRow
                         player = 1;
                     }
                 }
-
-
             }
 
 

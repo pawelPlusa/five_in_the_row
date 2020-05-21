@@ -101,12 +101,31 @@ namespace FiveInTheRow
 
         public void DrawBoard(int[,] board)
         {
+            Console.Write("  ");
+            for (int colNum = 0; colNum < this.cols; colNum++)
+            {
+                Console.Write("{0} ", colNum);
+            }
+            Console.WriteLine();
             for (int x = 0; x < board.GetLength(0); x++)
             {
+                char colLetter = (char)(x + 65);
+                Console.Write("{0} ", colLetter);
                 for (int y = 0; y < board.GetLength(1); y++)
                 {
-                    //Console.WriteLine(initBoard[x,y]);
-                    Console.Write("{0}", board[x, y]);
+                    if(board[x, y] == 0)
+                    {
+                    Console.Write("{0} ", (char)254); // It s ASCII symbol for empty field
+                    }
+                    else if(board[x, y] == 1)
+                    {
+                    Console.Write("{0} ", (char)(15)); // It s ASCII symbol for player 1
+                    }
+                    else
+                    {
+                        Console.Write("{0} ", (char)(232)); // It s ASCII symbol for player 2
+                    }
+
                 }
                 Console.WriteLine();
             }
@@ -166,7 +185,6 @@ namespace FiveInTheRow
                             break;
 
                         }
-                        Console.WriteLine("this board" + this.board[x, y - 1]);
                         
                         return HorizontalCheck(player, howMany, x, y, counter, boardTemp, lastMatched);
 
