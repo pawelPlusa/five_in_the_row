@@ -31,7 +31,7 @@ namespace FiveInTheRow
             return board;
         }
 
-        public (int, int) GetMove()
+        public (int, int) GetMove(int player)
         {
             bool isCorrect = false;
             string input;
@@ -39,7 +39,7 @@ namespace FiveInTheRow
             int coordX;
             do
             {
-                Console.WriteLine("please provide coordinates for your move or type 'quit' to leave the game: ");
+                Console.WriteLine("Player: {0}, please provide coordinates for your move or type 'quit' to leave the game: ", player);
                 input = Console.ReadLine();
                 if (input == "quit")
                 {
@@ -105,6 +105,7 @@ namespace FiveInTheRow
         public void DrawBoard(int[,] board)
         {
             Console.Clear();
+            Console.SetCursorPosition((Console.WindowWidth - ((cols/2)-1)) / 2, Console.CursorTop);
             Console.Write("  ");
             for (int colNum = 0; colNum < this.cols; colNum++)
             {
@@ -114,20 +115,28 @@ namespace FiveInTheRow
             for (int x = 0; x < board.GetLength(0); x++)
             {
                 char colLetter = (char)(x + 65);
+                Console.SetCursorPosition((Console.WindowWidth - ((cols / 2) - 1)) / 2, Console.CursorTop);
                 Console.Write("{0} ", colLetter);
                 for (int y = 0; y < board.GetLength(1); y++)
                 {
                     if(board[x, y] == 0)
                     {
-                    Console.Write("{0} ", (char)254); // It s ASCII symbol for empty field
+                        
+                        Console.Write("{0} ", (char)46); // It s ASCII symbol for empty field
+                        
                     }
                     else if(board[x, y] == 1)
                     {
-                    Console.Write("{0} ", (char)(15)); // It s ASCII symbol for player 1
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("{0} ", (char)(966)); // It s ASCII symbol for player 1
+                        Console.ForegroundColor = ConsoleColor.Green;
+
                     }
                     else
                     {
-                        Console.Write("{0} ", (char)(232)); // It s ASCII symbol for player 2
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("{0} ", (char)(991)); // It s ASCII symbol for player 2
+                        Console.ForegroundColor = ConsoleColor.Green;
                     }
 
                 }
@@ -138,9 +147,9 @@ namespace FiveInTheRow
         public bool IsWin(int player, int howMany)
         {
             if (
-                HorizontalCheck(player, howMany, 0, 0, 0, this.board) ||
-            //VerticalCheck(player, howMany, 0, 0, 0)) 
-            //DiagonalRightCheck(player, howMany, 0, 0, 0) || 
+           HorizontalCheck(player, howMany, 0, 0, 0, this.board) ||
+           VerticalCheck(player, howMany, 0, 0, 0, this.board) ||
+           DiagonalRightCheck(player, howMany, 0, 0, 0,this.board) || 
            DiagonalLeftCheck(player, howMany, 0, this.cols, 0, this.board))
             {
                 return true;
@@ -201,55 +210,94 @@ namespace FiveInTheRow
             return false;
 
         }
-        public bool VerticalCheck(int player, int howMany, int row, int col, int counter)
+        public bool VerticalCheck(int player, int howMany, int row, int col, int counter, int[,] board, bool lastMatched = false)
         {
+            int[,] boardTemp = board.Clone() as int[,];
             for (int y = col; y <= this.cols - 1; y++)
             {
-                for (int x = row; x <= this.rows - 1; x++)
+                for (int x = lastMatched ? row : 0 ; x <= this.rows - 1; x++)
                 {
-                    if (this.board[x, y] == player)
+
+                    if (boardTemp[x, y] == player)
                     {
                         counter++;
+                        boardTemp[x, y] = 0;
+                        lastMatched = true;
                         if (counter == howMany)
                         {
                             return true;
                         }
+                        //zabezpiecza przed wysypaniem gdy testowalismy dla y przy scianie
+                        if (x < rows - 1)
+                        {
+                            x++;
+                        }
+                        else
+                        {
+                            lastMatched = false;
+                            y = 0;
+                            counter = 0;
+                            break;
 
-                        x++;
-                        return VerticalCheck(player, howMany, x, y, counter);
+                        }
+
+                        return VerticalCheck(player, howMany, x, y, counter, boardTemp, lastMatched);
                     }
-                    else
+                    else if (x > 0 && boardTemp[x, y] == 0 && this.board[x -1, y] == 1 && lastMatched)
                     {
+                        x = 0;
                         counter = 0;
+                        lastMatched = false;
+                        break;
                     }
                 }
             }
             return false;
         }
-        public bool DiagonalRightCheck(int player, int howMany, int row, int col, int counter)
+        public bool DiagonalRightCheck(int player, int howMany, int row, int col, int counter, int[,] board, bool lastMatched = false)
         {
             int[,] boardTemp = board.Clone() as int[,];
 
-            for (int x = row; x <= this.rows - 1; x++)
+            for (int x = lastMatched ? row : 0; x <= this.rows - 1; x++)
             {
-                for (int y = col; y <= this.cols - 1; y++)
+                for (int y = lastMatched ? col : 0 ; y <= this.cols - 1; y++)
                 {
-                    if (this.board[x, y] == player)
+                    if (boardTemp[x, y] == player)
                     {
                         counter++;
+                        boardTemp[x, y] = 0;
+                        lastMatched = true;
                         if (counter == howMany)
                         {
                             return true;
                         }
-                        if (y == this.cols || x == this.rows)
+
+                        // else zabezpiecza przed sytuacją gdy y = 0 i tym samym chce zmienic y na cos poza indexem
+                        if (y < cols -1 && x < rows -1)
                         {
+                            y++;
+                            x++;
+                        }
+                        else
+                        {
+                            lastMatched = false;
+                            x = 0;
+                            counter = 0;
                             break;
                         }
-                        y++;
-                        x++;
-                        return DiagonalRightCheck(player, howMany, x, y, counter);
+                        return DiagonalRightCheck(player, howMany, x, y, counter, boardTemp, lastMatched);
+                    }
+                    else if (y > 0 && x > 0 && boardTemp[x, y] == 0 && this.board[x - 1, y - 1] == 1 && lastMatched)
+                    {
+                        x = 0;
+                        counter = 0;
+                        lastMatched = false;
+                        break;
+                        //return DiagonalRightCheck(player, howMany, x, y, counter, boardTemp, lastMatched);
                     }
                 }
+
+            
             }
             return false;
 
@@ -300,32 +348,7 @@ namespace FiveInTheRow
             return false;
         }
 
-        //backup funkcji przed moimi nocnymi zmianami
-        public bool DiagonalLeftCheckBackup(int player, int howMany, int row, int col, int counter)
-        {
-            for (int x = row; x <= this.rows - 1; x++)
-            {
-                for (int y = cols - 1; y >= 0; y--)
-                {
-                    if (this.board[x, y] == player)
-                    {
-                        counter++;
-                        if (counter == howMany)
-                        {
-                            return true;
-                        }
-                        if (y == 0 || x == this.rows)
-                        {
-                            break;
-                        }
-                        y--;
-                        x++;
-                        return DiagonalLeftCheckBackup(player, howMany, x, y, counter);
-                    }
-                }
-            }
-            return false;
-        }
+
         public bool IsFull(int[,] board)
         {
             foreach(int field in board)
