@@ -13,13 +13,29 @@ namespace FiveInTheRow
         }
         public static void GameLogic()
         {
-            //Dodać wyłącznosć wprowadzania liczb całkowitych
-            Console.WriteLine("Give number of board rows: ");
-            int rows = Int32.Parse(Console.ReadLine());
-            Console.WriteLine("Give number of board cols: ");
-            int cols = Int32.Parse(Console.ReadLine());
-            Console.WriteLine("Give number of fields to get WIN: ");
-            int howMany = Int32.Parse(Console.ReadLine());
+            int rows = 0;
+            int cols = 0;
+            int howMany = 0;
+            bool invalidInput;
+            do
+            {
+                try
+                {
+                    Console.WriteLine("Give number of board rows: ");
+                    rows = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Give number of board cols: ");
+                    cols = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Give number of fields to get WIN: ");
+                    howMany = Int32.Parse(Console.ReadLine());
+                    invalidInput = false;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    invalidInput = true;
+                }
+            } while (invalidInput);
+
 
             var OurGame = new Game(rows, cols);
 
@@ -29,7 +45,7 @@ namespace FiveInTheRow
             while (isOver)
             {
                 OurGame.Mark(OurGame.GetMove(), player);
-                if(OurGame.IsWin(player, howMany))
+                if (OurGame.IsWin(player, howMany))
                 {
                     OurGame.PrintResult(player);
                     isOver = false;
@@ -41,18 +57,10 @@ namespace FiveInTheRow
                 }
                 else
                 {
-                    if (player == 1)
-                    {
-                        player = 2;
-                    }
-                    else
-                    {
-                        player = 1;
-                    }
+                    player = (player == 1 ? 2 : 1);
                 }
+
             }
-
-
         }
     }
 }

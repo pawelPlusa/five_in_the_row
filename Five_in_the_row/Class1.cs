@@ -39,9 +39,12 @@ namespace FiveInTheRow
             int coordX;
             do
             {
-                Console.WriteLine("please provide coordinates for your move?");
+                Console.WriteLine("please provide coordinates for your move or type 'quit' to leave the game: ");
                 input = Console.ReadLine();
-
+                if (input == "quit")
+                {
+                    Environment.Exit(0);
+                }
                 if (input.Length != 2 && input.Length != 3)
                 {
                     Console.WriteLine("only 2 or 3 signs allowed");
